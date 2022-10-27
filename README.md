@@ -14,5 +14,5 @@ Please create an issue to share references or ideas related to the development o
 📫 Contact
 ---
 
-For any organisation related queries or concerns, you can directly reach out to Malvika Sharan by emailing [vstraub@turing.ac.uk](mailto:vstraub@turing.ac.uk) or [yhashem@turing.ac.uk](mailto:yhashem@turing.ac.uk). 
+For any organisation related queries or concerns, you can directly reach out by emailing [vstraub@turing.ac.uk](mailto:vstraub@turing.ac.uk) or [yhashem@turing.ac.uk](mailto:yhashem@turing.ac.uk). 
 
