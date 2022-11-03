@@ -1,5 +1,19 @@
 # Decision services index
 
+## TO DO 
+
+- Preproces serivce pages to find statistics on:
+  - 'organisation'
+  - 'service task name'
+  - 'service description'
+  - 'task output'
+  - 'response time'
+  - 'type of task'
+  - 'task stimuli'
+  - 'digital service'
+- Look into 'decision' pages: https://github.com/alphagov/govuk_document_types/blob/main/data/supertypes.yml
+
+
 ## About this Repository
 
 This project aims to broaden our understanding of how many decisions relating to the delivery of individual public services government departments make on a daily basis.
