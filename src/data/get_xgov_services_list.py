@@ -2,18 +2,19 @@
 # -*- coding: utf-8 -*-
 
 """
-The fetch_service_govuk_urls.py module fetches the HTML content of
+The get_xgov_services_list.py module fetches the HTML content of
 public services listed on https://govuk-digital-services.herokuapp.com/
 using a GET request and extracts the service name, priority status, 
 organisation, topic, and URL.
 """
 
 import requests   # 3rd party packages
+import datetime
 import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup
 
-import config    # local imports
+from data import config    # local imports
 
 
 __author__ = "Vincent Straub"
@@ -128,7 +129,19 @@ def main():
     # Exculde non-existent services
     df = df[df['govuk_start_page_url'].notna()]
 
-    df.to_excel("202212-xgov-govuk-services-list.xlsx")  
+    YYYYMM = get_current_month_and_year()
+
+    df.to_excel("../data/raw/{}-xgov-govuk-services-list.xlsx".format(YYYYMM))  
+    
+
+def get_current_month_and_year():
+    # Get the current date
+    current_date = datetime.datetime.now()
+    
+    # Format the current date as 'YYYYMM'
+    formatted_date = current_date.strftime('%Y%m')
+    
+    return formatted_date
     
 
 if __name__ == "__main__":

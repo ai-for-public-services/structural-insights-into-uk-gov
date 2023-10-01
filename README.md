@@ -1,66 +1,58 @@
-# Decision services index datasets
+# Project Overview
 
-## TO DO 
-1. **Get Variables to get for as many datasets as possible**:
-   - Organisation
-   - Topic
-   - Verb (for 2012 data)
-   
+This project focuses on data collection, analysis, and timing measurement for various tasks related to government services. It involves processing data from various sources and performing data analysis to compute key statistics. Additionally, it measures the execution time of data processing tasks and generates an execution time report.
 
-- **Analyse GDS transactions data**
-    - digital volume
+## Directory Structure
 
+The project directory structure is organized as follows:
 
-- **Analyse data on number of open central government websites over time** 
+- `/src`: Contains the main Python scripts.
+- `/reports`: Reserved for generated figures and reports (including an execution_report.pdf for run_data_pipeline.py)
+- `/notebooks`: Contains Jupyter notebooks (e.g., '02-figure-2.ipynb').
+- `/dsindexenv`: Virtual environment for the project (not shown in the description).
+- `/docs`: Documentation for the project (not detailed in the description).
+- `/data`: Contains subfolders for raw, processed, miscellaneous, and archived data.
 
+Within the `/src` directory, you will find subfolders:
+- `/data`: Data collection scripts.
+- `/analysis`: Scripts for computing key descriptive statistics.
+- `/preprocess`: Data preprocessing scripts.
 
-- **Analyse service 2 click transactions data**
+## Key Python Files
 
+### run_data_pipeline.py
 
-- **Download, preprocess and analyse API and web scraping data on 2022 web-scraping-services** - using request_govuk_data.py
-    - Find out how many of 361 X-GOV services are in GDS; and how many are different (based on URL and name)
-        - Update variables (abbr, body, service_type, customer_type) based on GDS transactions spreadsheet and interpolate the rest by hand (i.e. using questionaire)
-    - Collect data on services using web scraping and API for 'response time', 'digital (start now)'
-    - https://dataingovernment.blog.gov.uk/2016/05/26/use-the-search-api-to-get-useful-information-about-gov-uk-content/
-    - https://docs.publishing.service.gov.uk/repos/search-api.html
-    - https://docs.publishing.service.gov.uk/repos.html
-    - Variables to collect:
-        - document_type
-        - verb
-        - priority
-        - topic
-     - Onces to potentially skip:
-        - cost
-        - time_to_complete
-        - response_time
-        
-        
-- **Preprocess and analyse SML questionnaire data of priority services (and others)**
-    - Variables:
-        - digital
-        - service transaction type
-    - Variables to check API data accuracy:
-        - verb
-        - document_type
-        - service_name for priority services
-    - Onces to potentially skip:
-        - cost
-        - time_to_complete
-        - response_time
-        
-        
-- **Download, preprocess and analyse data on civil service statistics**
-   - Dataset: https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/publicsectorpersonnel/datasets/publicsectoremploymentreferencetable Time: 2011-2022
-   - Dataset: https://www.gov.uk/government/collections/civil-service-statistics  2006-2022
-   - Dataset: https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/methodologies/annualpopulationsurveyapsqmi#toc  Time: 2012-2022
-   - Variables of interest:
-      - 'headcount'?
-      - 'Profession (e.g. operational delivery), Function (individual's role)'?
-      - 'Occupation'?
-      - 'Skill level'?
-  
+- **Purpose**: This script is responsible for running data collection and preprocessing tasks. It orchestrates the execution of various functions related to collecting data through web scraping or APIs and preprocessing files stored in the 'raw' directory, saving them to the 'processed' directory.
 
+### run_analysis.py
 
-## Resources
-- https://govuk-digital-services.herokuapp.com/domains
-- https://www.instituteforgovernment.org.uk/explainers/professions-civil-service#:~:text=Civil%20servants%20undertake%20a%20wide,to%20people%20using%20public%20services.
+- **Purpose**: This script performs data analysis on key files stored in the 'processed' directory. It calculates important statistics and generates a summary table. The key tasks include creating task group categories, returning task counts, computing RTI scores, and producing summary tables for the entire dataset and for rows where 'priority' is True.
+
+### time_data_pipeline.py
+
+- **Purpose**: This script measures the execution time of data processing tasks and generates an execution time report. It times the execution of various functions related to data collection and preprocessing and presents the results in a PDF report.
+
+## Usage
+
+To run the scripts, execute them in the project's virtual environment from the /src directory, ensuring that all dependencies are installed.
+
+```bash
+python run_data_pipeline.py
+python run_analysis.py
+python time_data_pipeline.py
+```
+
+##  Author
+
+- **Author**: Vincent Straub
+- **Email**: vstraub@turing.ac.uk
+
+## Status
+
+- **Status**: Testing
+
+Please ensure that all necessary dependencies and libraries are properly installed before running the script. Additionally, make sure that the `/data` and `/preprocess` directories contain the required modules and scripts for data collection and preprocessing tasks.
+
+For any questions or issues related to this script, you can contact the author via the provided email address.
+
+Happy data processing!
