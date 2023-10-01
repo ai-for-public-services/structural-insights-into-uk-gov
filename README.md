@@ -34,7 +34,7 @@ Within the `/src` directory, you will find subfolders:
 
 ## Usage
 
-To run the scripts, execute them in the project's virtual environment from the /src directory, ensuring that all dependencies are installed.
+To run the scripts, execute them in the project's virtual environment from the `/src` directory, ensuring that all dependencies are installed.
 
 ```bash
 python run_data_pipeline.py
@@ -54,5 +54,3 @@ python time_data_pipeline.py
 Please ensure that all necessary dependencies and libraries are properly installed before running the script. Additionally, make sure that the `/data` and `/preprocess` directories contain the required modules and scripts for data collection and preprocessing tasks.
 
 For any questions or issues related to this script, you can contact the author via the provided email address.
-
-Happy data processing!
