@@ -1,8 +1,4 @@
-# Project Overview
-
-This project focuses on data collection, analysis, and timing measurement for various tasks related to government services. It involves processing data from various sources and performing data analysis to compute key statistics. Additionally, it measures the execution time of data processing tasks and generates an execution time report.
-
-## Directory Structure
+# Directory Structure
 
 The project directory structure is organized as follows:
 
