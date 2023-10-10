@@ -21,7 +21,7 @@ def main():
 
     # load merged CSV
     merger = pd.read_csv('../data/raw/201202-201809-central-government-websites-raw.csv')
-    # remove rows with missig data for URL column
+    # remove rows with missing data for URL column
     merger_filtered_URL = merger.loc[(merger['URL'].apply(lambda x: isinstance(x, str)))]
     # remove rows with missing data for Year column
     merge_filtered_year = merger_filtered_URL.loc[merger_filtered_URL['Year'].notnull()]
