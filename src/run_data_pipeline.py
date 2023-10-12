@@ -49,8 +49,6 @@ def main():
             task()
         except Exception as e:
             print(f"An error occurred while executing {task.__name__}: {e}")
-            # You can add additional error handling or logging here if needed
-
 
 if __name__ == "__main__":
     main()
