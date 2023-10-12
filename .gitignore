@@ -105,6 +105,8 @@ venv.bak/
 dmypy.json
 # Pyre type checker
 .pyre/
+# Ignore Jupyter notebooks starting with 'xx'
+xx*.ipynb
 .Rproj.user
 .Rhistory
 decision-services-index.Rproj
