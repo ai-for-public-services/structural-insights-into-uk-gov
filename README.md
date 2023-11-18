@@ -45,7 +45,7 @@ python time_data_pipeline.py
 ##  Author
 
 - **Author**: Vincent Straub
-- **Email**: vstraub@turing.ac.uk
+- **Email**: vincejstraub@gmail.com
 
 ## Status
 
