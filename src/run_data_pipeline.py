@@ -31,6 +31,7 @@ __status__ = "Testing"
 
 def main():
     # Define a list of functions to call in sequence
+    # (note that none were designed with explicit error handling in mind)
     tasks = [
         get_xgov_services_list.main,                # Download list of active services
         process_service_task_data.main,             # Process primary data relating to service tasks
