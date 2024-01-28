@@ -4,51 +4,30 @@
 #### Title: GOV.UK service pages
  - Source(s): gov  
  - Access: scrape
- - Variables of interest:
-      - 'organisation', 'service task name', 'service description', 'task output', 'response time', 'type of task', 'task stimuli',  'digital service', 'cost'
-  - IMPUTE: service_type
   - Time: 2022
-  - Contact: Tara Stockford, GDS
 
 
 #### Title: Open government websites
   - Source(s): gov (click [here](https://www.gov.uk/government/collections/central-government-websites) for info)
   - Access: download
-  - Variables of interest:
-      - 'existence of service'
   - Time: 2011-2018
 
 
 #### Title: GOV.UK unique clicks
   - Source(s): gov, ind
   - Access: request
-  - Variables of interest:
-      - 'total volume', 'annual volume'
   - Time: 2022
   - Contact: Clifford Sheppard, GDS
-  - Notes: where missing get website traffic trends from 3rd party site?
 
 
 #### Title: Civil service statistics
   - Source(s): gov, ind
   - Access: download, request
-  - Variables of interest:
-      - 'headcount', 'profession (e.g. operational delivery)', 'function (individual's role)',  'occupation', 'skill level'
-      
       
 #### Title: Service transactions
   - Source: gov
   - Access: request
-  - Variables of interest:
-      - 'total volume', 'annual volume', 'digital volume'
  - Time: 2013-2018
- 
-#### Title: Search for service AI use
-  - Source: web, ind
-  - Access: scrape
-   - Variables of interest:
-      - 'ML present', 'decision/agent'
-   - Time: 2022
 
 
 **Professions and Functions**
