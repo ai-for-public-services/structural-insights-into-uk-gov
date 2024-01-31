@@ -150,3 +150,8 @@ Some notes on the data:
 - links with fewer than 100 unique clicks in those 12 months aren't included
 
 
+# notes on 201204-201703-service-transactions-processed
+
+JB added max observed column 01/2024
+
+
