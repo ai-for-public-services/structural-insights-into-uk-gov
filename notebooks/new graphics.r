@@ -19,6 +19,9 @@ data_dir <- 'C:/Users/simon/Desktop/Turing/Projects/decision-services-index/data
 df_services <- read_xlsx(paste0(data_dir,'202308-services-list-processed.xlsx'))
 
 
+#should change max observed to most recent observed
+
+
 df_trans_volumes <- read_csv(paste0(data_dir,'201204-201703-service-transactions-processed.csv'))
 df_trans_volumes_short <- 
   df_trans_volumes %>% 
