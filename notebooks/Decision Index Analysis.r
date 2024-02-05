@@ -83,40 +83,33 @@ table(df$organisation)
 
 #transactions and transaction distribution
 df_sum <- df_services %>%
-  group_by(Servicetype) %>%
+  group_by(topic) %>%
   summarise(
     n = n(),
     sum = sum(transaction_value)
   )
 
-ggplot(df_sum, aes(x=transaction_value, y=sum)) + 
+ggplot(df_sum, aes(x=topic, y=sum)) + 
   geom_bar(stat='identity') +
-  coord_flip() + scale_y_continuous(labels = comma_format()) 
+  coord_flip() + scale_y_log10(labels = scales::comma_format())
   
 
 #power law distribution of services 
 df_services$rank <- rank(-df_services$transaction_value)
-ggplot(df_services, aes(x = rank, y = transaction_value+1)) + 
+ggplot(df_services, aes(x = rank, y = transaction_value)) + 
   geom_point() + coord_trans(y = "log10", x = "log10") 
 
 
-#map to current data
-
-
-#DELETE PIP
-#DOUBLE CHECK ALL ASSIGNMENT
-#MODEL
-
-l <- lm(log(max_observed+1) ~ log(unique_clicks_2022+1), data=df_services)
-
-#predictive model for unique clicks 
-
-df_services$predicted_transactions <- predict(l, df_services)
-
-#set unknown values to mean / median 
-
-sum(df_services$predicted_transactions)
-
-#Automation 
+#*3 Automation---- 
 ##Share of routine tasks overall (Fig3b)
 ##breakdown by task type (Fig3A)
+
+df_ast <- read_csv(paste0(data_dir,'AST Assignments.csv'))
+
+df_ast_short <- df_ast %>%
+  select('RTI', 'govuk_start_page_url')
+
+df_services <- 
+  df_services %>% left_join(df_ast_short, by='govuk_start_page_url')
+
+table(is.na(df_services$RTI), useNA='always')#8 more services should be matched - need to check the matching
