@@ -21,7 +21,7 @@ df_services <- read_xlsx(paste0(data_dir,'202308-services-list-processed-final.x
 
 #Data Preprocessing and transaction model----
 
-#Set unique clicks to average if not available
+#*Set unique clicks to average----
 df_services$unique_clicks_final <- df_services$unique_clicks_2022
 table(is.na(df_services$unique_clicks_final))
 table(df_services$unique_clicks_final==0)
@@ -32,17 +32,19 @@ df_services$unique_clicks_final[is.na(df_services$unique_clicks_final)==TRUE] <-
 
 #turn X into NA
 table(df_services$final_transactions_value=='x')
-df_services$final_transactions_value <- as.numeric(df_services$final_transactions_value)
+df_services$final_transactions_value <- as.numeric(df_services$final_transactions_value)#expected NA warning message
 table(is.na(df_services$final_transactions_value))
 
 #create model
 trans_model <- lm(log10(final_transactions_value) ~ log10(unique_clicks_final), data=df_services)
+summary(trans_model)#can't use topic because there are some unseen levels
 
 trans_model_lmer <- lmer(formula = log10(final_transactions_value) ~ log10(unique_clicks_final) + (1|topic), data = df_services) 
-r.squaredGLMM(trans_model_lmer)#best fit
+r.squaredGLMM(trans_model_lmer)#better fit because we can use topics
 
 #predict results 
 df_services$predicted_transactions <- 10**predict(trans_model_lmer, df_services, allow.new.levels = TRUE)
+#10** to go back from log transform
 
 #make a final column with either the actual value or predicted one
 df_services$transaction_value <- 
@@ -51,9 +53,20 @@ df_services$transaction_value <-
     TRUE ~ df_services$final_transactions_value
   )
 
+#check results
 sum(df_services$transaction_value)
 sum(df_services$final_transactions_value, na.rm=TRUE)
 
+#*Attach AST data----
+df_ast <- read_csv(paste0(data_dir,'AST Assignments.csv'))
+df_ast_short <- df_ast %>%
+  select('RTI', 'service')
+
+df_services$service <- tolower(df_services$service)
+df_services <- 
+  df_services %>% left_join(df_ast_short, by='service')
+
+table(is.na(df_services$RTI), useNA='always')#201 services should have AST scores (hence should be false for NA)
 
 #Results----
 
@@ -99,17 +112,37 @@ df_services$rank <- rank(-df_services$transaction_value)
 ggplot(df_services, aes(x = rank, y = transaction_value)) + 
   geom_point() + coord_trans(y = "log10", x = "log10") 
 
+#how do we attach in service delivery of professionals data?
 
 #*3 Automation---- 
 ##Share of routine tasks overall (Fig3b)
 ##breakdown by task type (Fig3A)
 
-df_ast <- read_csv(paste0(data_dir,'AST Assignments.csv'))
+df_services_rti <- df_services %>% filter(!is.na(RTI))
 
-df_ast_short <- df_ast %>%
-  select('RTI', 'govuk_start_page_url')
+#ECDF for RTI
+ggplot(df_services_rti, aes(RTI)) +
+  stat_ecdf(geom = "step")#warning message - removes 
 
-df_services <- 
-  df_services %>% left_join(df_ast_short, by='govuk_start_page_url')
+hist(df_services_rti$RTI)
 
-table(is.na(df_services$RTI), useNA='always')#8 more services should be matched - need to check the matching
+#if RTI was seen as a proportion of transactions 
+df_services_rti$RTI_trans <- df_services_rti$RTI * df_services_rti$transaction_value
+ggplot(df_services_rti, aes(RTI_trans)) +
+  stat_ecdf(geom = "step")#warning message - removes 
+
+hist(df_services_rti$RTI_trans)
+
+df_services_rti <- df_services_rti %>% 
+  mutate(rti_bin = cut_width(RTI, width = 0.2))
+
+rti_summary <- 
+  df_services_rti %>%
+  group_by(rti_bin) %>%
+  summarise(
+    n = n(),
+    perc = n/nrow(df_services_rti),
+    num_trans_affected = sum(transaction_value)
+  )
+
+
