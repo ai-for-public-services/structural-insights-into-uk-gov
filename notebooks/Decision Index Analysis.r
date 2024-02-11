@@ -27,9 +27,12 @@ table(is.na(df_services$unique_clicks_final))
 table(df_services$unique_clicks_final==0)
 
 df_services$unique_clicks_final[is.na(df_services$unique_clicks_final)==TRUE] <- median(df_services$unique_clicks_final, na.rm=TRUE) 
+table(is.na(df_services$unique_clicks_final))
+
 
 #*Transaction Model----
 
+#rows with no transaction number were assigned 0
 #turn X into NA
 table(df_services$final_transactions_value=='x')
 df_services$final_transactions_value <- as.numeric(df_services$final_transactions_value)#expected NA warning message
@@ -55,6 +58,7 @@ df_services$transaction_value <-
 
 #check results
 sum(df_services$transaction_value)
+#how much of the overall volume is driven by the new services?
 sum(df_services$final_transactions_value, na.rm=TRUE)
 
 #*Attach AST data----
@@ -73,21 +77,17 @@ table(is.na(df_services$RTI), useNA='always')#201 services should have AST score
 #*1 Types----
 
 ##by type, topic
-table(df$topic)
-table(df$service_type, useNA = 'always')
+table(df_services$topic)
+table(df_services$service_type, useNA = 'always')
 
-ggplot(df, aes(x=topic)) + geom_bar() + coord_flip()
+ggplot(df_services, aes(x=topic)) + geom_bar() + coord_flip()
 
 ##by department
-table(df$organisation)
-
+table(df_services$organisation)
 
 ##network diagram - shows overlap of types. good potential for services to be shared across departments 
 
-
 ##parallel / correlation between web forms? 
-
-
 
 #*2 Volumes----
 ##Distribution of transaction volumes (Zipf)
@@ -107,29 +107,29 @@ ggplot(df_sum, aes(x=topic, y=sum)) +
   coord_flip() + scale_y_log10(labels = scales::comma_format())
   
 
-#power law distribution of services 
+#power law distribution of services in transaction volume 
 df_services$rank <- rank(-df_services$transaction_value)
 ggplot(df_services, aes(x = rank, y = transaction_value)) + 
   geom_point() + coord_trans(y = "log10", x = "log10") 
-
-#how do we attach in service delivery of professionals data?
 
 #*3 Automation---- 
 ##Share of routine tasks overall (Fig3b)
 ##breakdown by task type (Fig3A)
 
+#only rti scores for 201 services 
 df_services_rti <- df_services %>% filter(!is.na(RTI))
 
 #ECDF for RTI
 ggplot(df_services_rti, aes(RTI)) +
-  stat_ecdf(geom = "step")#warning message - removes 
+  stat_ecdf(geom = "step")
 
 hist(df_services_rti$RTI)
 
 #if RTI was seen as a proportion of transactions 
+#don't think this is the righ graphic
 df_services_rti$RTI_trans <- df_services_rti$RTI * df_services_rti$transaction_value
 ggplot(df_services_rti, aes(RTI_trans)) +
-  stat_ecdf(geom = "step")#warning message - removes 
+  stat_ecdf(geom = "step")
 
 hist(df_services_rti$RTI_trans)
 
@@ -141,8 +141,9 @@ rti_summary <-
   group_by(rti_bin) %>%
   summarise(
     n = n(),
-    perc = n/nrow(df_services_rti),
-    num_trans_affected = sum(transaction_value)
+    perc_services = n/nrow(df_services_rti),
+    num_trans_affected = sum(transaction_value),
+    perc_trans_affected = sum(transaction_value)/sum(df_services_rti$transaction_value)
   )
 
 
