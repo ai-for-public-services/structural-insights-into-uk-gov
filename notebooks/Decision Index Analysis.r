@@ -64,7 +64,7 @@ sum(df_services$final_transactions_value, na.rm=TRUE)
 #*Attach AST data----
 df_ast <- read_csv(paste0(data_dir,'AST Assignments.csv'))
 df_ast_short <- df_ast %>%
-  select('RTI', 'service')
+  select('RTI', 'service', 'rubric_score_manual')
 
 df_services$service <- tolower(df_services$service)
 df_services <- 
@@ -72,67 +72,89 @@ df_services <-
 
 table(is.na(df_services$RTI), useNA='always')#201 services should have AST scores (hence should be false for NA)
 
+#*Depts with <10 services----
+df_services <- 
+  df_services %>%
+  group_by(organisation) %>%
+  mutate(org_n = n()) %>%
+  ungroup() %>%
+  mutate(org_name = case_when(
+    org_n < 10 ~ 'Other',
+    TRUE ~ organisation
+  ))
+
 #Results----
 
-#*1 Types----
+#FIG1 Methods:
+##Data collection pathway 
+##Transaction volume estimation 
+##AST score calculation 
+##PGAI Calculation
+##Could include number of registered organisations and services. 
 
-##by type, topic
-table(df_services$topic)
-table(df_services$service_type, useNA = 'always')
+##service turnover statistics - average in the python file 
+##to present cautiously - missing data likely plays a role
 
+#FIG2 Volumes 
+##Service volumes, transaction volumes by type, department(? +10 services)
+##Zipf distribution of transactions, annotated. Newwork graphic
+
+#FIG3 AST/PGAIpotential
+##Distribution of AST scores, annotated. Bucketised by transaction volume
+##Table description of PGAI scores, by transaction volume 
+
+
+
+#*FIG2 Service count and transaction volumes----
+
+##service count by topic and organisation
 ggplot(df_services, aes(x=topic)) + geom_bar() + coord_flip()
+ggplot(df_services[df_services$org_n>10,], 
+       aes(x=org_name)) + geom_bar() + coord_flip()
 
-##by department
-table(df_services$organisation)
 
-##network diagram - shows overlap of types. good potential for services to be shared across departments 
-
-##parallel / correlation between web forms? 
-
-#*2 Volumes----
-##Distribution of transaction volumes (Zipf)
-##Partial mapping to contemporary services 
-##Parallel / correlation between web visits 
 
 #transactions and transaction distribution
-df_sum <- df_services %>%
+df_trans_topic <- df_services %>%
   group_by(topic) %>%
   summarise(
     n = n(),
     sum = sum(transaction_value)
   )
 
-ggplot(df_sum, aes(x=topic, y=sum)) + 
+df_trans_org <- df_services %>%
+  group_by(org_name) %>%
+  summarise(
+    n = n(),
+    sum = sum(transaction_value)
+  )
+
+ggplot(df_trans_topic, aes(x=topic, y=sum)) + 
   geom_bar(stat='identity') +
   coord_flip() + scale_y_log10(labels = scales::comma_format())
-  
+
+ggplot(df_trans_org, aes(x=org_name, y=sum)) + 
+  geom_bar(stat='identity') +
+  coord_flip() + scale_y_log10(labels = scales::comma_format())
+
+##network diagram - shows overlap of topics good potential for services to be shared across departments 
+##this is contained in another file 
 
 #power law distribution of services in transaction volume 
 df_services$rank <- rank(-df_services$transaction_value)
 ggplot(df_services, aes(x = rank, y = transaction_value)) + 
   geom_point() + coord_trans(y = "log10", x = "log10") 
 
-#*3 Automation---- 
+#*FIG3 Automation---- 
 ##Share of routine tasks overall (Fig3b)
 ##breakdown by task type (Fig3A)
+
+#task count data? tasks per service 
 
 #only rti scores for 201 services 
 df_services_rti <- df_services %>% filter(!is.na(RTI))
 
-#ECDF for RTI
-ggplot(df_services_rti, aes(RTI)) +
-  stat_ecdf(geom = "step")
-
-hist(df_services_rti$RTI)
-
-#if RTI was seen as a proportion of transactions 
-#don't think this is the righ graphic
-df_services_rti$RTI_trans <- df_services_rti$RTI * df_services_rti$transaction_value
-ggplot(df_services_rti, aes(RTI_trans)) +
-  stat_ecdf(geom = "step")
-
-hist(df_services_rti$RTI_trans)
-
+#rti / transaction volume link
 df_services_rti <- df_services_rti %>% 
   mutate(rti_bin = cut_width(RTI, width = 0.2))
 
@@ -146,4 +168,8 @@ rti_summary <-
     perc_trans_affected = sum(transaction_value)/sum(df_services_rti$transaction_value)
   )
 
+ggplot(rti_summary, aes(x=rti_bin, y=perc_trans_affected)) +
+  geom_bar(stat='identity')
+
+#pgenai data 
 
