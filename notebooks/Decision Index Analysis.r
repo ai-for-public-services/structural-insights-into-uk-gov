@@ -59,12 +59,15 @@ df_services$transaction_value <-
 #check results
 sum(df_services$transaction_value)
 #how much of the overall volume is driven by the new services?
-sum(df_services$final_transactions_value, na.rm=TRUE)
+sum(df_services$final_transactions_value, na.rm=TRE)
+
+#median transaction 
+median(df_services$transaction_value)
 
 #*Attach AST data----
 df_ast <- read_csv(paste0(data_dir,'AST Assignments.csv'))
 df_ast_short <- df_ast %>%
-  select('RTI', 'service', 'rubric_score_manual')
+  select('RTI', 'task_count', 'RTI_perc', 'service', 'rubric_score_manual')
 
 df_services$service <- tolower(df_services$service)
 df_services <- 
@@ -105,7 +108,7 @@ df_services <-
 
 
 
-#*FIG2 Service count and transaction volumes----
+#*Service count and transaction volumes----
 
 ##service count by topic and organisation
 ggplot(df_services, aes(x=topic)) + geom_bar() + coord_flip()
@@ -145,18 +148,35 @@ df_services$rank <- rank(-df_services$transaction_value)
 ggplot(df_services, aes(x = rank, y = transaction_value)) + 
   geom_point() + coord_trans(y = "log10", x = "log10") 
 
-#*FIG3 Automation---- 
+#*Automation---- 
 ##Share of routine tasks overall (Fig3b)
 ##breakdown by task type (Fig3A)
-
-#task count data? tasks per service 
 
 #only rti scores for 201 services 
 df_services_rti <- df_services %>% filter(!is.na(RTI))
 
+#num transactions for the rti data
+sum(df_services_rti$transaction_value)
+
+#tasks per service, sd
+summary(df_services_rti$task_count)
+sd(df_services_rti$task_count)
+
+#avg routine tasks
+mean(df_services_rti$RTI_perc)
+nrow(df_services_rti[df_services_rti$RTI_perc==100,])/nrow(df_services_rti)
+
+#distribution of routine tasks
+ggplot(df_services_rti, aes(x=RTI_perc, y=(..count..)/sum(..count..))) + 
+  geom_bar() +
+  scale_x_binned() +
+  scale_y_continuous(labels=scales::percent_format())
+
 #rti / transaction volume link
 df_services_rti <- df_services_rti %>% 
-  mutate(rti_bin = cut_width(RTI, width = 0.2))
+  mutate(rti_bin = cut(RTI_perc, 
+                              width=10,
+                             breaks=c(30,40,50,60,70,80,90,100)))
 
 rti_summary <- 
   df_services_rti %>%
@@ -172,4 +192,4 @@ ggplot(rti_summary, aes(x=rti_bin, y=perc_trans_affected)) +
   geom_bar(stat='identity')
 
 #pgenai data 
-
+table(df_services_rti$rubric_score_manual)
