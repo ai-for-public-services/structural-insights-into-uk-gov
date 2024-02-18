@@ -110,3 +110,4 @@ xx*.ipynb
 .Rproj.user
 .Rhistory
 decision-services-index.Rproj
+.virtual_documents/
