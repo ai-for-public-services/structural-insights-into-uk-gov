@@ -44,8 +44,8 @@ python time_data_pipeline.py
 
 ##  Author
 
-- **Author**: Vincent Straub
-- **Email**: vincejstraub@gmail.com
+- **Lead author**: Vincent Straub
+- **Co-author**: Jonathan Bright
 
 ## Status
 
