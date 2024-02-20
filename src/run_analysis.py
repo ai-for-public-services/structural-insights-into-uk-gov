@@ -23,6 +23,10 @@ def main():
     output_file_path = '../data/processed/dataframes/analysis-df-w-api-data.pkl'
     
     try:
+        # def main():    
+        input_file_path = '../data/processed/dataframes/analysis-df-w-api-data.pkl'
+        output_file_path = '../data/processed/dataframes/analysis-df-w-api-data.pkl'
+        
         # Load the analysis DataFrame
         analysis_df = load_analysis_dataframe(input_file_path)
         
@@ -30,14 +34,23 @@ def main():
         analysis_df = get_task_groups_count.create_task_group_category(analysis_df)
         print(get_task_groups_count.return_task_counts(analysis_df))
         
-        analysis_df = compute_rti_scores.add_rti_scores(
-            analysis_df, compute_rti_scores.compute_rti_scores
-        )
         
-        # Add a column 'RTI_perc' by applying the 'transform_to_percentage' function
-        analysis_df['RTI_perc'] = analysis_df['RTI'].apply(
-            compute_rti_scores.transform_to_percentage
-        )
+        if 'RTI' not in analysis_df.columns:
+            analysis_df = compute_rti_scores.add_rti_scores(
+                analysis_df, compute_rti_scores.compute_rti_scores
+            )
+        
+        if 'RTI_perc' not in analysis_df.columns:
+            # Add a column 'RTI_perc' by applying the 'transform_to_percentage' function
+            analysis_df['RTI_perc'] = analysis_df['RTI'].apply(
+                compute_rti_scores.transform_to_percentage
+            )
+        
+        if 'RTI_rescaled' not in analysis_df.columns:
+            # Add a column 'RTI_rescaled' by transforming the RTI_perc column
+            analysis_df['RTI_rescaled'] = analysis_df['RTI_perc'].apply(
+                lambda x: x / 100 if 0 <= x <= 100 else x
+            )
         
         # Print the summary table for the entire DataFrame
         print('\Share of routine tasks:')
@@ -50,7 +63,7 @@ def main():
         
         # Save the updated DataFrame to a pickle file
         analysis_df.to_pickle(output_file_path)
-    
+        
     except Exception as e:
         print(f"An error occurred: {e}")
 
