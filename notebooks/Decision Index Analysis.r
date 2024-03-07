@@ -193,3 +193,22 @@ ggplot(rti_summary, aes(x=rti_bin, y=perc_trans_affected)) +
 
 #pgenai data 
 table(df_services_rti$rubric_score_manual)
+
+
+
+#*Potential saving statistics
+#How much difference would saving 10 minutes per transactions for these 150 million transactions?
+
+mil140 <- 140000000
+
+minutes_saved <- mil140 * 1
+
+hours_saved <- minutes_saved / 60
+
+#hours of work in a year
+#8 hours * 5 days * 52 weeks 
+#doesn't take into account holiday of course but will do as a rough approx
+
+hours_work_year <- 8 * 5 * 52
+
+work_years_saved <- hours_saved / hours_work_year
