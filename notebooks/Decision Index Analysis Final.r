@@ -39,7 +39,7 @@ df_services <- df_services %>% mutate(
 
 #*Set unique clicks to median----
 df_services$unique_clicks_final <- df_services$unique_clicks_2022
-table(is.na(df_services$unique_clicks_final))
+table(is.na(df_services$unique_clicks_final))#40 services have no click data 
 table(df_services$unique_clicks_final==0)
 
 df_services$unique_clicks_final[is.na(df_services$unique_clicks_final)==TRUE] <- median(df_services$unique_clicks_final, na.rm=TRUE) 
@@ -48,7 +48,7 @@ table(is.na(df_services$unique_clicks_final))
 
 #*Transaction Model----
 #how many services had a "true" transaction value in the data? (where they don't have x here)
-table(df_services$final_transactions_value!='x')
+table(df_services$final_transactions_value!='x')#118 services have a true transaction value
 
 #change xs to NAs
 df_services$final_transactions_value <- as.numeric(df_services$final_transactions_value)#expected NA warning message
@@ -110,11 +110,8 @@ df_services <-
     TRUE ~ organisation
   ))
 
-#Write out data for visualisation----
-
-#df_services <- read_xlsx(paste0(data_dir,'202308-services-list-processed-final.xlsx'))
-
-#202308-services-list-w-transaction-vol-processed.xlsx
+#*Write out data for visualisation----
+write.csv(df_services, paste0(data_dir, 'services-list-with-transaction-volumes-final.csv'))
 
 #Results----
 
