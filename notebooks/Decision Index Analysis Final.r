@@ -110,6 +110,12 @@ df_services <-
     TRUE ~ organisation
   ))
 
+#Write out data for visualisation----
+
+#df_services <- read_xlsx(paste0(data_dir,'202308-services-list-processed-final.xlsx'))
+
+#202308-services-list-w-transaction-vol-processed.xlsx
+
 #Results----
 
 ###NOTE - all graphics are now made in the ipython notebooks
