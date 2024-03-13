@@ -111,7 +111,8 @@ df_services <-
   ))
 
 #*Write out data for visualisation----
-write.csv(df_services, paste0(data_dir, 'services-list-with-transaction-volumes-final.csv'))
+write.csv(df_services, paste0(data_dir, 'services-list-with-transaction-volumes-final.csv'), 
+          fileEncoding = 'utf-8')
 
 #Results----
 
