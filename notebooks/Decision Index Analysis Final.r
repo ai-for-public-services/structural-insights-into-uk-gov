@@ -237,14 +237,13 @@ sum(test_df$transaction_value)
 
 mil140 <- 143129315
 
-minutes_saved <- mil140 * 1
+#88% highly automatable
+mil140.88 <- mil140 * 0.88
+
+minutes_saved <- mil140.88 * 1
 
 hours_saved <- minutes_saved / 60
 hours_saved
-
-#hours of work in a year
-#8 hours * 5 days * 52 weeks 
-#doesn't take into account holiday of course but will do as a rough approx
 
 hours_work_year <- 36.4 * 46.5
 #https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/timeseries/ybuy/lms
