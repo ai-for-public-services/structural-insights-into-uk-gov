@@ -196,6 +196,14 @@ sd(df_services_rti$task_count)
 mean(df_services_rti$RTI_perc)
 nrow(df_services_rti[df_services_rti$RTI_perc==100,])/nrow(df_services_rti)
 
+#how many services with above 75% RTI?
+df_services_rti_highly <- df_services_rti[df_services_rti$RTI_perc>75,]#135
+135/201#67%
+#how many transactions do they account for?
+sum(df_services_rti_highly$transaction_value)
+sum(df_services_rti_highly$transaction_value)/sum(df_services_rti$transaction_value)#0.83
+
+
 #distribution of routine tasks
 ggplot(df_services_rti, aes(x=RTI_perc, y=(..count..)/sum(..count..))) + 
   geom_bar() +
@@ -235,12 +243,16 @@ sum(df_services_rti$transaction_value)
 test_df <- df_services_rti %>% filter(RTI_perc<75)
 sum(test_df$transaction_value)
 
-mil140 <- 143129315
 
+
+#mil140 <- 143129315
 #88% highly automatable
-mil140.88 <- mil140 * 0.88
+#mil140.88 <- mil140 * 0.88
 
-minutes_saved <- mil140.88 * 1
+
+transactions_addressed <- sum(df_services_rti_highly$transaction_value)
+
+minutes_saved <- transactions_addressed * 1
 
 hours_saved <- minutes_saved / 60
 hours_saved
