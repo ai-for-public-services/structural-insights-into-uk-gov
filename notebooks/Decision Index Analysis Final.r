@@ -197,11 +197,11 @@ mean(df_services_rti$RTI_perc)
 nrow(df_services_rti[df_services_rti$RTI_perc==100,])/nrow(df_services_rti)
 
 #how many services with above 75% RTI?
-df_services_rti_highly <- df_services_rti[df_services_rti$RTI_perc>75,]#135
-135/201#67%
+df_services_rti_highly <- df_services_rti[df_services_rti$RTI_perc>=75,]#149
+149/201#74%
 #how many transactions do they account for?
 sum(df_services_rti_highly$transaction_value)
-sum(df_services_rti_highly$transaction_value)/sum(df_services_rti$transaction_value)#0.83
+sum(df_services_rti_highly$transaction_value)/sum(df_services_rti$transaction_value)#0.84
 
 
 #distribution of routine tasks
