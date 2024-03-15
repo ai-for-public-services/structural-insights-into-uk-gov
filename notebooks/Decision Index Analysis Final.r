@@ -203,6 +203,10 @@ df_services_rti_highly <- df_services_rti[df_services_rti$RTI_perc>=75,]#149
 sum(df_services_rti_highly$transaction_value)
 sum(df_services_rti_highly$transaction_value)/sum(df_services_rti$transaction_value)#0.84
 
+#how many transactions above 0.9
+sum(df_services_rti$transaction_value[df_services_rti$RTI_perc>=90])/sum(df_services_rti$transaction_value)
+71/201#74%
+
 
 #distribution of routine tasks
 ggplot(df_services_rti, aes(x=RTI_perc, y=(..count..)/sum(..count..))) + 
@@ -262,3 +266,21 @@ hours_work_year <- 36.4 * 46.5
 
 work_years_saved <- hours_saved / hours_work_year
 work_years_saved
+
+#*Service turnover ----
+#Recording here how service turnover is estimated
+
+#Look at the spreadsheet 201204-201703-service-transactions-processed
+
+#Check the number of transactions recorded every (non digital) end of year quarter.
+
+#201312 - 393
+#201412 - 379
+#201512 - 348
+#201612 - 293
+
+#However it is really hard to tell which services have changed and which data is just missing. 
+#In the end let's not report a hard number on service change.
+
+
+
