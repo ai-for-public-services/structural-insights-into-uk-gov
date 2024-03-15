@@ -188,6 +188,9 @@ df_services_rti <- df_services %>% filter(!is.na(RTI))
 #num transactions for the rti data
 sum(df_services_rti$transaction_value)
 
+#as proportion of total
+sum(df_services_rti$transaction_value)/sum(df_services$transaction_value)
+
 #tasks per service, sd
 summary(df_services_rti$task_count)
 sd(df_services_rti$task_count)
