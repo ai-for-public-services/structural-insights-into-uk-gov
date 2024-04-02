@@ -1,4 +1,4 @@
-# Project Overview
+# Measuring the potential of artificial intelligence to automate UK government services
 
 The aims of this project are threefold. Firstly, it sets out to broaden our understanding of the administrative decision-making processes involved in the delivery of public services. Secondly, it seeks to quantitively describe the attributes of these processes, highlighting the public services requiring the highest decision-making capacity and interaction between citizens and the government. Finally, it seeks to assess how many of these services could benefit from the use of automation and generative AI, providing a conceptual framework for assessing the suitability of using these technologies.  
 
