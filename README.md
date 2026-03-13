@@ -1,4 +1,4 @@
-# Measuring the potential of artificial intelligence to automate UK government services
+# Task structure predicts AI automation potential across UK central government services
 
 The aims of this project are threefold. Firstly, it sets out to broaden our understanding of the administrative decision-making processes involved in the delivery of public services. Secondly, it seeks to quantitively describe the attributes of these processes, highlighting the public services requiring the highest decision-making capacity and interaction between citizens and the government. Finally, it seeks to assess how many of these services could benefit from the use of automation and generative AI, providing a conceptual framework for assessing the suitability of using these technologies.  
 
@@ -54,3 +54,4 @@ python time_data_pipeline.py
 Please ensure that all necessary dependencies and libraries are properly installed before running the script. Additionally, make sure that the `/data` and `/preprocess` directories contain the required modules and scripts for data collection and preprocessing tasks.
 
 For any questions or issues related to this script, you can contact the author via the provided email address.
+
